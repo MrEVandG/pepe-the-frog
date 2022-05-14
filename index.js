@@ -53,17 +53,9 @@ client.once("ready", () => {
     })()
 })
 
-client.on("interactionCreate",async interaction=>{
-    if (!interaction.isCommand()) return
-    const command = client.commands.get(interaction.commandName)
-    if (!command) return
-    try {
-        await command.execute(interaction,client,db)
-    } catch (err) {
-        if (interaction.replied||interaction.deferred) interaction.editReply("The code errored")
-        else interaction.reply("The code errored")
-        console.log(err)
-    }
+client.on("interactionCreate",interaction=>{
+    const interactionCreate = require("./events/interactionCreate")
+    interactionCreate(interaction,client,db)
 })
 
 client.login(process.env.TOKEN)

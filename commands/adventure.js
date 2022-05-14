@@ -11,12 +11,15 @@ module.exports = {
      */
     async execute(interaction, client) {
         await interaction.deferReply()
+        let chose = false
         const row = new discord.MessageActionRow()
             .addComponents(new discord.MessageSelectMenu({
                 customId: "adventure",
+                placeholder: "Choose an adventure",
                 options: [{
                     label: "Space",
-                    description: "You are going to space to replace that American flag with your own."
+                    description: "You are going to space to replace that American flag with your own.",
+                    value: "space"
                 }]
             }))
 
@@ -29,6 +32,17 @@ module.exports = {
                 iconURL: interaction.user.displayAvatarURL()
             }
         })
-        await interaction.reply({ embeds: [embed] })
+        await interaction.editReply({ embeds: [embed], components: [row] })
+
+        const filter = (m) => m.user.id === interaction.user.id
+        const collector = interaction.channel.createMessageComponentCollector({ filter, time: 60_000, componentType: "SELECT_MENU" }) // gives the user 60 seconds to choose and play
+        collector.on("collect", async (m) => {
+            if (m.user.id===interaction.user.id) {
+                chose = true
+            }
+        })
+        collector.on("end", async (collected) => {
+            if (!chose) await interaction.editReply("You did not choose a choice in time.")
+        })
     }
 }
