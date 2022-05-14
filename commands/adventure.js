@@ -25,7 +25,7 @@ module.exports = {
 
         const embed = new discord.MessageEmbed({
             title: "Adventure",
-            description: "Space",
+            description: "Choose an adventure to go on",
             color: "GREEN",
             author: {
                 name: `${interaction.user.tag} is going on an adventure`,
@@ -36,9 +36,18 @@ module.exports = {
 
         const filter = (m) => m.user.id === interaction.user.id
         const collector = interaction.channel.createMessageComponentCollector({ filter, time: 60_000, componentType: "SELECT_MENU" }) // gives the user 60 seconds to choose and play
+        /**@param {discord.SelectMenuInteraction} m*/
         collector.on("collect", async (m) => {
+            console.log(m.values)
+            m.deferUpdate()
             if (m.user.id===interaction.user.id) {
+                m.update({content: "bean"})
                 chose = true
+                if (m.customId==="adventure") {
+                    if (m.value==="space") {
+                        await interaction.editReply("You are going to space to replace that American flag with your own.")
+                    }
+                }
             }
         })
         collector.on("end", async (collected) => {
