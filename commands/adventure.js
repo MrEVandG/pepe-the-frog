@@ -54,8 +54,8 @@ module.exports = {
             }  
         })
         collector.on("dispose", async (collected) => {
-            row.components.map(i=>i.disabled=true)
-            interaction.editReply({embeds:[embed],components:[row],content:`${!chose??"You did not choose a choice in time."}`})
+            row.components[0].options.forEach(o => o.disabled=true)
+            await interaction.editReply({embeds:[embed],components:[row],content:`${!chose??"You did not choose a choice in time."}`})
         })
     }
 }
