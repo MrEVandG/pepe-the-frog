@@ -35,7 +35,7 @@ module.exports = {
         await interaction.editReply({ embeds: [embed], components: [row] })
 
         const filter = (m) => m.user.id === interaction.user.id
-        const collector = interaction.channel.createMessageComponentCollector({ filter, time: 60_000, componentType: "SELECT_MENU" }) // gives the user 60 seconds to choose and play
+        const collector = interaction.channel.createMessageComponentCollector({ filter, time: 10_000, componentType: "SELECT_MENU" }) // gives the user 60 seconds to choose and play
         /**@param {discord.SelectMenuInteraction} m*/
         collector.on("collect", async (m) => {
             m.deferUpdate()
@@ -51,9 +51,9 @@ module.exports = {
                         await interaction.editReply({ embeds: [embed] })
                     }
                 }
-            }
+            }  
         })
-        collector.on("end", async (collected) => {
+        collector.on("dispose", async (collected) => {
             row.components.map(i=>i.disabled=true)
             interaction.editReply({embeds:[embed],components:[row],content:`${!chose??"You did not choose a choice in time."}`})
         })
