@@ -38,20 +38,24 @@ module.exports = {
         const collector = interaction.channel.createMessageComponentCollector({ filter, time: 60_000, componentType: "SELECT_MENU" }) // gives the user 60 seconds to choose and play
         /**@param {discord.SelectMenuInteraction} m*/
         collector.on("collect", async (m) => {
-            console.log(m.values)
             m.deferUpdate()
             if (m.user.id===interaction.user.id) {
-                m.update({content: "bean"})
                 chose = true
                 if (m.customId==="adventure") {
-                    if (m.value==="space") {
-                        await interaction.editReply("You are going to space to replace that American flag with your own.")
+                    if (m.values[0]==="space") {
+                        embed.setDescription("You are going to space to replace that American flag with your own.")
+                        embed.setTitle("Space")
+                        embed.setImage("https://i.imgur.com/87Yojbq.png")
+                        // set color to a dark, spacy blue
+                        embed.setColor("#1E1559")
+                        await interaction.editReply({ embeds: [embed] })
                     }
                 }
             }
         })
         collector.on("end", async (collected) => {
-            if (!chose) await interaction.editReply("You did not choose a choice in time.")
+            row.components.map(i=>i.disabled=true)
+            interaction.editReply({embeds:[embed],components:[row],content:`${!chose??"You did not choose a choice in time."}`})
         })
     }
 }
