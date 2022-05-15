@@ -13,16 +13,25 @@ const client = new Client({
     ]
 })
 
-const commandFiles = fs.readdirSync("./commands").filter(file => file.endsWith(".js"))
-
+const commandFilenames = fs.readdirSync("./commands")
+console.log(commandFilenames, commandFilenames[0].hasOwnProperty("endsWith"))
 const commands = []
 
 client.commands = new Collection()
 
-for (const file of commandFiles) {
-    const command = require(`./commands/${file}`)
-    commands.push(command.data.toJSON())
-    client.commands.set(command.data.name, command)
+for (const filename of commandFilenames) {
+    if (filename.endsWith(".js")) {
+        const command = require(`./commands/${filename}`)
+        commands.push(command.data.toJSON())
+        client.commands.set(command.data.name, command)
+        continue
+    }
+
+    fs.readdirSync("./commands/" + filename).forEach(file => {
+        const command = require(`./commands/${filename}/${file}`)
+        client.commands.set(command.data.name, command.data)
+    })
+
 }
 
 client.once("ready", () => {
@@ -33,10 +42,10 @@ client.once("ready", () => {
     const rest = new REST({
         version: "9"
     }).setToken(process.env.TOKEN);
-    
+
     (async () => {
         try {
-            if (process.env.ENV==="production") {
+            if (process.env.ENV === "production") {
                 await rest.put(Routes.applicationCommands(CLIENT_ID), {
                     body: commands
                 })
@@ -53,9 +62,9 @@ client.once("ready", () => {
     })()
 })
 
-client.on("interactionCreate",interaction=>{
+client.on("interactionCreate", interaction => {
     const interactionCreate = require("./events/interactionCreate")
-    interactionCreate(interaction,client,db)
+    interactionCreate(interaction, client, db)
 })
 
 client.login(process.env.TOKEN)
