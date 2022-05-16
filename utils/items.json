@@ -1,0 +1,49 @@
+[
+    {
+        "name": "Legendary Lootbox",
+        "itemid": "legendarylootbox",
+        "type": "legendary",
+        "inshop": false,
+        "emoji": "<:legendarylootbox:973355820945395732>",
+        "description": "A very special chest full to the top of legendary items.",
+        "longdescription": "This chest can have anywhere between 2-10 legendary-rarity items that give you outstanding effects. Or, who knows, just give it to your dog or something.",
+        "canbesold": false,
+        "consumable": true
+    },
+    {
+        "itemid": "coffee",
+        "name": "Coffee",
+        "consumable": true,
+        "type": "average",
+        "inshop": true,
+        "emoji": "<:coffeecup:973389812553895990>",
+        "description": "It's a cup of coffee",
+        "longdescription": "This one substance may grow an unwanted addiction for every morning... or maybe it's just a nice cup of coffee that gives you energy. Whatever you decide",
+        "canbesold": true,
+        "price": 15
+    },
+    {
+        "itemid": "cake",
+        "name": "Strawberry Cake",
+        "consumable": true,
+        "type": "average",
+        "inshop": true,
+        "emoji": "<:strawberrycake:973719714952007690>",
+        "description": "Its a sweet, sugary deluxe.",
+        "longdescription": "You can bake another like this in your kitchen, but make sure you don't mess it up... But you can eat this one, since it's perfect quality",
+        "canbesold": true,
+        "price": 25
+    },
+    {
+        "itemid": "frenchfry",
+        "name": "French Fry",
+        "consumable": true,
+        "type": "below-average",
+        "inshop": false,
+        "emoji": "<:frenchfry:974461207463469126>",
+        "description": "You don't want to eat this thing.",
+        "longdescription": "Make sure not to eat it... quite literally. It's a little nauseating, but if you really want to eat it, go ahead... Or give it back to McDonald's where it came from.",
+        "canbesold": true,
+        "price": 2
+    }
+]

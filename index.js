@@ -1,4 +1,6 @@
 require("dotenv").config()
+const { Op } = require('sequelize');
+const { Users, CurrencyShop } = require('./dbObjects.js');
 const fs = require("fs")
 const { REST } = require("@discordjs/rest")
 const { Routes } = require("discord-api-types/v9")
@@ -14,9 +16,9 @@ const client = new Client({
 })
 
 const commandFilenames = fs.readdirSync("./commands")
-console.log(commandFilenames, commandFilenames[0].hasOwnProperty("endsWith"))
 const commands = []
 
+const currency = new Collection()
 client.commands = new Collection()
 
 for (const filename of commandFilenames) {
@@ -29,13 +31,20 @@ for (const filename of commandFilenames) {
 
     fs.readdirSync("./commands/" + filename).forEach(file => {
         const command = require(`./commands/${filename}/${file}`)
-        client.commands.set(command.data.name, command.data)
+        commands.push(command.data.toJSON())
+        client.commands.set(command.data.name, command)
     })
-
 }
 
-client.once("ready", () => {
+client.on('messageCreate', async message => {
+	if (message.author.bot) return;
+	currency.add(message.author.id, 1);
+});
+
+client.once("ready", async () => {
     console.log("The bot is ready!!")
+	const storedBalances = await Users.findAll();
+	storedBalances.forEach(b => currency.set(b.user_id, b));
 
     const CLIENT_ID = client.user.id
 
@@ -64,7 +73,32 @@ client.once("ready", () => {
 
 client.on("interactionCreate", interaction => {
     const interactionCreate = require("./events/interactionCreate")
-    interactionCreate(interaction, client, db)
+    interactionCreate(interaction, client, currency, Users, CurrencyShop)
 })
 
 client.login(process.env.TOKEN)
+
+Reflect.defineProperty(currency, 'add', {
+	value: async (id, amount) => {
+		const user = currency.get(id);
+
+		if (user) {
+			user.balance += Number(amount);
+			return user.save();
+		}
+
+		const newUser = await Users.create({ user_id: id, balance: amount });
+		currency.set(id, newUser);
+
+		return newUser;
+	},
+});
+
+Reflect.defineProperty(currency, 'getBalance', {
+	value: id => {
+		const user = currency.get(id);
+		return user ? user.balance : 0;
+	},
+});
+
+Reflect.defineProperty(currency, "name", {value: "$"})
