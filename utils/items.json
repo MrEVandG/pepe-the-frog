@@ -1,7 +1,7 @@
 [
     {
         "name": "Legendary Lootbox",
-        "itemid": "legendarylootbox",
+        "item_id": "legendarylootbox",
         "type": "legendary",
         "inshop": false,
         "emoji": "<:legendarylootbox:973355820945395732>",
@@ -11,7 +11,7 @@
         "consumable": true
     },
     {
-        "itemid": "coffee",
+        "item_id": "coffee",
         "name": "Coffee",
         "consumable": true,
         "type": "average",
@@ -23,7 +23,7 @@
         "price": 15
     },
     {
-        "itemid": "cake",
+        "item_id": "cake",
         "name": "Strawberry Cake",
         "consumable": true,
         "type": "average",
@@ -35,7 +35,7 @@
         "price": 25
     },
     {
-        "itemid": "frenchfry",
+        "item_id": "frenchfry",
         "name": "French Fry",
         "consumable": true,
         "type": "below-average",
@@ -45,5 +45,17 @@
         "longdescription": "Make sure not to eat it... quite literally. It's a little nauseating, but if you really want to eat it, go ahead... Or give it back to McDonald's where it came from.",
         "canbesold": true,
         "price": 2
+    },
+    {
+        "item_id": "blackhole",
+        "name": "Black Hole",
+        "consumable": true,
+        "type": "out-of-this-world",
+        "inshop": false,
+        "description": "Anything you do with this thing will not end greatly.",
+        "longdescription": "Where in the world- or sorry, universe did you get one like this? I bet it will sell for a lot.",
+        "canbesold": true,
+        "price": 10000000, // ten million coins
+        "emoji": "<:blackhole:977651009851629659>"
     }
 ]

@@ -24,7 +24,7 @@ module.exports = {
                 color: "DARK_RED",
                 footer: {
                     text: "You need to specify an amount of money to add",
-                    iconURL: "https://imgur.com/gOpzsBS"
+                    iconURL: "https://i.imgur.com/gOpzsBS.png"
                 }
             })], ephemeral: true
         })
@@ -47,7 +47,7 @@ module.exports = {
             embeds: [embed],
             ephemeral: true
         })
-        if (target == interaction.user) {
+        if (target !== interaction.user) {
             /**@type {discord.Message}*/
             let dm;
             client.users.fetch(target.id, false).then(async user => {

@@ -17,7 +17,7 @@ module.exports = {
         const balance = currency.getBalance(userId)
         const embed = new discord.MessageEmbed()
             .setTitle("Balance")
-            .setDescription(`${target.tag} has ${currency.name}${balance}`)
+            .setDescription(`${target.tag} has ${currency.name}${parseInt(balance).toLocaleString()}`)
             .setColor("GREEN")
             .setFooter({text:target.tag,iconURL:target.displayAvatarURL()})
         interaction.reply({embeds:[embed]})

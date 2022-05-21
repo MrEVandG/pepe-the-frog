@@ -20,17 +20,17 @@ UserItems.belongsTo(CurrencyShop, { foreignKey: 'item_id', as: 'item' });
 
 Reflect.defineProperty(Users.prototype, 'addItem', {
 	/* eslint-disable-next-line func-name-matching */
-	value: async function addItem(item) {
+	value: async function addItem(itemID, amount) {
 		const userItem = await UserItems.findOne({
-			where: { user_id: this.user_id, item_id: item.id },
+			where: { user_id: this.user_id, item_id: itemID },
 		});
 
 		if (userItem) {
 			userItem.amount += 1;
-			return userItem.save();
+			return await userItem.save();
 		}
 
-		return UserItems.create({ user_id: this.user_id, item_id: item.id, amount: 1 });
+		return await UserItems.create({ user_id: this.user_id, item_id: itemID, amount: 1 });
 	},
 });
 

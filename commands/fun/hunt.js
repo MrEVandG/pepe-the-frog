@@ -18,7 +18,7 @@ module.exports = {
             color: "DARK_RED",
             footer: {
                 text: "This command is not fully complete yet.",
-                iconURL:"https://imgur.com/gOpzsBS"
+                iconURL:"https://i.imgur.com/gOpzsBS.png"
             }
         })]})
     }

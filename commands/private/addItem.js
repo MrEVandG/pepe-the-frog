@@ -22,5 +22,25 @@ module.exports = {
             description: "What kind of thing am I adding if you don't even tell me the item?",
             color: "DARK_RED",
         })],ephemeral:true})
+        const amount = interaction.options.getInteger("amount") ?? 1
+        const target = interaction.options.getUser("user") ?? interaction.user
+        const item = await currencyShop.findOne({ where: { item_id: itemID } })
+        if (!item) return await interaction.reply({embeds:[new discord.MessageEmbed({
+            title: "Add Item",
+            description: "I don't think that item exists bro",
+            color: "DARK_RED",
+        })],ephemeral:true})
+        const user = await users.findOne({ where: { user_id: target.id } })
+        user?.addItem(itemID, amount)
+        const embed = new discord.MessageEmbed({
+            title: "Added Item",
+            description: `${target.tag} has been given x${amount.toLocaleString()} ${item.emoji}\`${item.name}\``,
+            color: "GREEN",
+            footer: {
+                text: `Given to ${target.tag}`,
+                iconURL: target.displayAvatarURL()
+            }
+        })
+        return await interaction.reply({embeds:[embed],ephemeral:true}) 
     }
 }
