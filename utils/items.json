@@ -55,7 +55,7 @@
         "description": "Anything you do with this thing will not end greatly.",
         "longdescription": "Where in the world- or sorry, universe did you get one like this? I bet it will sell for a lot.",
         "canbesold": true,
-        "price": 10000000, // ten million coins
+        "price": 10000000,
         "emoji": "<:blackhole:977651009851629659>"
     }
 ]
