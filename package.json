@@ -1,0 +1,25 @@
+{
+  "name": "epic-discord-bot",
+  "version": "0.0.2",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node .",
+    "dev": "nodemon .",
+    "reset": "node clearDB"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/rest": "^0.4.1",
+    "better-sqlite3": "^8.0.1",
+    "discord-api-types": "^0.32.1",
+    "discord.js": "^13.16.0",
+    "dotenv": "^16.0.1",
+    "quick.db": "^9.0.7"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.16"
+  }
+}

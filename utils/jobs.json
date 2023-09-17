@@ -1,0 +1,42 @@
+[
+    {
+        "name": "Unemployed",
+        "shiftsperday": 0,
+        "shiftstounlock": 0,
+        "value": "unemployed",
+        "wage": 0,
+        "shiftcooldown": 0
+    },
+    {
+        "name": "Babysitter",
+        "value": "babysitter",
+        "shiftsperday": 1,
+        "wage": 175,
+        "shiftstounlock": 0,
+        "shiftcooldown": 30
+    },
+    {
+        "name": "McDonald's Cashier",
+        "value": "cashier",
+        "shiftsperday": 1,
+        "wage": 200,
+        "shiftstounlock": 5,
+        "shiftcooldown": 5
+    },
+    {
+        "name": "Builder",
+        "shiftsperday": 2,
+        "shiftstounlock": 45,
+        "wage": 220,
+        "value": "builder",
+        "shiftcooldown": 25
+    },
+    {
+        "name": "Programmer",
+        "wage": 700,
+        "shiftsperday": 2,
+        "value": "programmer",
+        "shiftstounlock": 75,
+        "shiftcooldown": 10
+    }
+]

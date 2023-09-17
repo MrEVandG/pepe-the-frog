@@ -1,0 +1,7 @@
+.env
+node_*
+package-lock.json
+*.sqlite
+db.js
+*/private/*.js
+.vscode/*
