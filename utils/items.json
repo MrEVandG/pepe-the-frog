@@ -2,7 +2,7 @@
     {
         "name": "Legendary Lootbox",
         "item_id": "legendarylootbox",
-        "rarity": "legendary",
+        "rarity": 5,
         "inshop": false,
         "emoji": "<:legendarylootbox:978042603008323614>",
         "description": "A very special chest full to the top of legendary items.",
@@ -15,7 +15,7 @@
         "item_id": "coffee",
         "name": "Coffee",
         "consumable": true,
-        "rarity": "common",
+        "rarity": 0,
         "inshop": true,
         "emoji": "<:coffeecup:978042602987339817>",
         "description": "It's a cup of coffee.",
@@ -28,7 +28,7 @@
         "item_id": "strawberrycake",
         "name": "Strawberry Cake",
         "consumable": true,
-        "rarity": "common",
+        "rarity": 0,
         "inshop": true,
         "emoji": "<:strawberrycake:978042603050246216>",
         "description": "Its a sweet, sugary deluxe.",
@@ -41,7 +41,7 @@
         "item_id": "frenchfry",
         "name": "French Fry",
         "consumable": true,
-        "rarity": "bad",
+        "rarity": -1,
         "inshop": false,
         "emoji": "<:frenchfry:978042602983141396>",
         "description": "You don't want to eat this thing.",
@@ -54,7 +54,7 @@
         "item_id": "blackhole",
         "name": "Black Hole",
         "consumable": true,
-        "rarity": "out-of-this-world",
+        "rarity": 10,
         "inshop": false,
         "description": "Anything you do with this thing will not end greatly.",
         "longdescription": "Where in the world- or sorry, universe did you get one like this? I bet it will sell for a lot.",
@@ -65,7 +65,7 @@
     }, {
         "name": "Tea",
         "item_id": "tea",
-        "rarity": "common",
+        "rarity": 0,
         "inshop": true,
         "canbesold": true,
         "consumable": true,
@@ -78,7 +78,7 @@
     {
         "name": "Mixer",
         "item_id": "mixer",
-        "rarity": "common",
+        "rarity": 0,
         "inshop": true,
         "canbesold": true,
         "consumable": false,
@@ -91,7 +91,7 @@
     {
         "name": "Milk",
         "item_id": "glassmilk",
-        "rarity": "common",
+        "rarity": 0,
         "inshop": true,
         "canbesold": true,
         "consumable": true,
@@ -104,7 +104,7 @@
     {
         "item_id": "sugar",
         "name": "Sugar",
-        "rarity": "common",
+        "rarity": 0,
         "inshop": true,
         "canbesold": true,
         "consumable": true,
@@ -117,7 +117,7 @@
     {
         "item_id": "chickenegg",
         "name": "Egg",
-        "rarity": "common",
+        "rarity": 0,
         "inshop": true,
         "canbesold": true,
         "consumable": true,
@@ -130,7 +130,7 @@
     {
         "item_id": "strawberry",
         "name": "Strawberry",
-        "rarity": "common",
+        "rarity": 0,
         "inshop": true,
         "canbesold": true,
         "consumable": true,
@@ -143,7 +143,7 @@
     {
         "item_id": "stickbutter",
         "name": "Stick of Butter",
-        "rarity": "common",
+        "rarity": 0,
         "inshop": true,
         "canbesold": true,
         "consumable": false,
@@ -156,7 +156,7 @@
     {
         "item_id": "flour",
         "name": "Flour",
-        "rarity": "common",
+        "rarity": 0,
         "inshop": true,
         "canbesold": true,
         "consumable": false,
@@ -169,7 +169,7 @@
     {
         "item_id": "garbage",
         "name": "Garbage",
-        "rarity": "bad",
+        "rarity": -2,
         "inshop": false,
         "canbesold": false,
         "consumable": false,
@@ -182,7 +182,7 @@
     {
         "name": "Purple Alien Chest",
         "item_id": "purplealienchest",
-        "rarity": "out-of-this-world",
+        "rarity": 10,
         "emoji": "<a:purplealienchest:1008422919422083223>",
         "inshop": false,
         "canbesold": true,
@@ -201,7 +201,7 @@
         "longdescription": "The 5th planet from Earth's sun.",
         "emoji": "<:jupiter:1008477379192160377>",
         "inshop": false,
-        "rarity": "out-of-this-world",
+        "rarity": 10,
         "type": ["planet"]
     },
     {
@@ -213,7 +213,7 @@
         "longdescription": "On use, this will give you a fixed number of shifts, that can be contributed to getting a better job.",
         "emoji": "<:paper:1052030010740969564>",
         "inshop": false,
-        "rarity": "rare",
+        "rarity": 3,
         "type": ["powerup"]
     },
     {
@@ -226,7 +226,7 @@
         "longdescription": "This exotic fish shows great, vibrant colors, making it perfect for money-making.",
         "name": "Rainbow Fish",
         "price": 500000,
-        "rarity": "rare",
+        "rarity": 3,
         "type": ["sealife","powerup"]
     },
     {
@@ -239,7 +239,7 @@
         "longdescription": "A common fish, good for making pets, not so good for making money, though.",
         "name": "Goldfish",
         "price": 150,
-        "rarity": "common",
+        "rarity": 0,
         "type": ["sealife"]
     },
     {
@@ -252,33 +252,43 @@
         "longdescription": "This fish is a little rarer and more expensive than a goldfish, but not by much. The colors are very pretty, though.",
         "name": "Blue Fish",
         "price": 300,
-        "rarity": "uncommon",
+        "rarity": 2,
         "type": ["sealife"]
     },
     {
         "canbesold": true,
         "consumable": false,
-        "description": "Used to fish. Collects basic fish.",
-        "emoji": "<:fishingrod:1055203849377427546>",
+        "description": "Used to fish. Collects surface-level sea life and trash.",
+        "emoji": {
+            "rodwithbobber": "<:fishingrod:1055203849377427546>",
+            "rodwithoutbobber": "<:fishingrodwithoutbobber:1175540824033996982>",
+            "linewithbobber": "<:fishingrodlinewithbobber:1165388371993034902>",
+            "linewithoutbobber": "<:fishingrodline:1165388373653987399>"
+        },
         "inshop": true,
         "item_id": "fishingrod",
         "longdescription": "This fishing rod collects Common and Uncommon fish types only. Rarer fish need to be collected with better rods.",
         "name": "Basic Fishing Rod",
         "price": 450,
-        "rarity": "common",
+        "rarity": 0,
         "type": ["fishing rod"]
     },
     {
         "canbesold": true,
         "consumable": false,
         "description": "A very rare rod for catching very rare fish.",
-        "emoji": "<:rainbowfishingrod:1055271928056786975>",
+        "emoji": {
+            "rodwithbobber": "<:rainbowfishingrod:1055271928056786975>",
+            "rodwithoutbobber": "<:rainbowfishingrodwithoutbobber:1175540825850130523>",
+            "linewithbobber": "<:rainbowfishingrodlinewithbobber:1165388374555754496>",
+            "linewithoutbobber": "<:rainbowfishingrodline:1165388375948284004>"
+        },
         "inshop": true,
         "item_id": "rainbowfishingrod",
         "longdescription": "This rod is very expensive, but pays itself back very quickly with all the different types of rare fish.",
         "name": "Rainbow Fishing Rod",
         "price": 150000,
-        "rarity": "epic",
+        "rarity": 4, 
         "type": ["fishing rod"]
     },
     {
@@ -291,7 +301,7 @@
         "longdescription": "It's a scratch-off ticket. Grab your lucky quarter and scratch off some tiles.",
         "name": "Scratch Off Ticket",
         "price": 15,
-        "rarity": "common",
+        "rarity": 0,
         "type": ["gamble","powerup"]
     }
 ]

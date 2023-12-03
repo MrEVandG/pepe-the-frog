@@ -16,7 +16,7 @@ async function messageCreate(message, db, client) {
     //todo let server managers change swearing permissions
     let dbChannel = await db.get(`channels.${message.channelId}`)
     if (dbChannel) {
-        if (dbChannel.allowsSwearing) {
+        if (dbChannel.allowsSwearing||message.guildId==process.env.GUILD_ID) {
             // Add currency and let them go
             await db.add(`users.${message.author.id}.currency`,1)
         } else {
@@ -24,23 +24,33 @@ async function messageCreate(message, db, client) {
             let slursUsed = 0
             let generalSwearsUsed = 0
             let content = message.content.replace("‍","") // You can't see it here - but replace Zero Width Joiners with whitespace so it can be flagged
+            let allSwearsUsed = []
             sussyWords.forEach(word=>{
                 if (content.includes(word)&&dbChannel.blacklistedWords.includes(word)) {
                     sussyWordsUsed++
+                    allSwearsUsed.push(word)
                 }
             })
             racialSlurs.forEach(word=>{
                 if (content.includes(word)&&dbChannel.blacklistedWords.includes(word)) {
                     slursUsed++
+                    allSwearsUsed.push(word)
                 }
             })
             generalSwears.forEach(word=>{
+                // Check is word is like "sassy" so it doesn't ban "ass"
                 if (content.includes(word)&&dbChannel.blacklistedWords.includes(word)) {
-                    generalSwearsUsed++
+                    if ([" ","\n","\r","\t",""].includes(content.indexOf(word)-1)
+                    || (content[content.indexOf(word)-1]?.toLowerCase() // if is character and not letter
+                    == content[content.indexOf(word)-1]?.toUpperCase())) {
+                        generalSwearsUsed++
+                        allSwearsUsed.push(word)
+                    }
                 }
             })
             if (sussyWordsUsed+slursUsed+generalSwearsUsed == 0) {
                 //- Message is clean.
+                //- Oh yeah this just kinda happens by default we dont "reward" not swearing
                 await db.add(`users.${message.author.id}.currency`,1)
             } else {
                 message.author.send({embeds:[{
@@ -53,7 +63,7 @@ async function messageCreate(message, db, client) {
                     thumbnail: {
                         url: "https://i.imgur.com/lRLMhHw.png"
                     },
-                    description: `The message you sent in \`${message.guild.name}\` was flagged for swearing.\n**${generalSwearsUsed?`${generalSwearsUsed} swears used\n`:""}${sussyWordsUsed?`${sussyWordsUsed} sus words used\n`:""}${slursUsed?`${slursUsed} racial slurs used\n`:""}**Punishment yet to be implemented...`
+                    description: `The message you sent in \`${message.guild.name}\` was flagged for swearing.\n**${generalSwearsUsed?`${generalSwearsUsed} swears used\n`:""}${sussyWordsUsed?`${sussyWordsUsed} sus words used\n`:""}${slursUsed?`${slursUsed} racial slurs used\n`:""}**Punishment yet to be implemented... Words used:\n${allSwearsUsed.join("\n")}`
                 }]})
                 if (message.deletable) {
                     await message.delete()  

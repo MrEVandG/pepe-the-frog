@@ -46,8 +46,8 @@ module.exports = {
         })
         let fields = []
         inventoryArray.forEach(async item => {
-            let price = item.canbesold ? `:${await db.get("name")}${item.amount*item.price} ${await db.get("name")}${item.price}/item` : ": Item cannot be sold."
-            fields.push({name:`x${fix(item.amount)} ${item.emoji} ${item.name}`, value:`${item.description}${price}`,inline:false})
+            let price = item.canbesold ? ` ${await db.get("name")}${item.amount*item.price} ${await db.get("name")}${item.price}/item` : " Item cannot be sold."
+            fields.push({name:`x${fix(item.amount)} ${typeof item.emoji == "object"?Object.values(item.emoji)[0]:item.emoji} ${item.name}`, value:`${item.description}${price}`,inline:false})
         })
         await new Promise(r=>setTimeout(r,100))
         embed.fields = fields

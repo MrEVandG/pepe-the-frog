@@ -1,12 +1,26 @@
 const discord = require("discord.js")
 /**
- * @param {discord.CommandInteraction} interaction 
+ * @param {discord.Interaction} interaction 
  * @param {discord.Client} client 
  */
 
-module.exports = async (interaction, client, db, utils, commands) => {
+module.exports = async (interaction, client, db, utils) => {
     await db.failSafe(interaction.user.id)
-    if (interaction.isCommand() || interaction.isContextMenu()) { // Normal slash commands and Context Menus (right-click menu) are luckily ran the same way :D
+    if (interaction.isAutocomplete()) {
+        /**
+         * @type {discord.AutocompleteInteraction}
+         */
+        let autocompleteInteraction = interaction
+        const command = client.commands.get(interaction.commandName)
+        if (!command) return;
+        if (!command?.autocomplete) return;
+        try {
+            await command.autocomplete(autocompleteInteraction, client, db, utils)
+        } catch (err) {
+            client.emit("error",err) // send the error to the webhook
+        }
+
+    } else if (interaction.isCommand() || interaction.isContextMenu()) { // Normal slash commands and Context Menus (right-click menu) are luckily ran the same way :D
         const command = client.commands.get(interaction.commandName)
         if (!command) return await interaction.reply({embeds:[new discord.MessageEmbed({description:"The command does not exist or cannot be found."})]})
         try {

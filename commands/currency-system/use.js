@@ -4,22 +4,29 @@ const discord = require("discord.js")
 const { SlashCommandBuilder } = require("@discordjs/builders")
 const quickdb = require("quick.db")
 const items = require("../../utils/items.json")
-let orderedItemList = items.filter(i=>i.consumable).sort()
-let string
-let example = {
+module.exports = {
     data: new SlashCommandBuilder()
-        .setName("use")
-        .setDescription("Use an item and consume on use.")
-        .addStringOption(s => {
-            string = s.setName("item").setDescription("The item to use").setRequired(true)
-            return s
-        }),
+    .setName("use")
+    .setDescription("Use an item and consume on use.")
+    .addStringOption(s=>s.setName("item").setDescription("The item to use").setRequired(true).setAutocomplete(true)),
+    /**
+     * 
+     * @param {discord.AutocompleteInteraction} interaction
+     * @param {discord.Client} client
+     * @param {quickdb.QuickDB} db
+     */
+    async autocomplete(interaction, client, db, utils) {
+        // Luckily, there's only 1 box, so no if-statemnt needed
+        const userItems = await db.get(`users.${interaction.user.id}.items`)
+        const options = Object.keys(userItems).filter(key=>userItems[key]>0).sort()
+        return await interaction.respond(options.map(option=>{return {value:option,name:utils.items.find(i=>i.item_id==option)?.name??option} }))
+    },
     /**
      * @param {discord.CommandInteraction} interaction
      * @param {discord.Client} client
      * @param {quickdb.QuickDB} db
-     */
-    async execute(interaction, client, db, utils) {
+    */
+   async execute(interaction, client, db, utils) {
         let useItem = interaction.options.getString("item")
         const currencyName = await db.get("name")
         const numberEmojis = ["0️⃣","1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣"]
@@ -36,7 +43,7 @@ let example = {
         if (userInventoryAmount<1||userInventoryAmount==undefined) {
             return await interaction.reply({embeds:[new discord.MessageEmbed({
                 title: "Item Not Owned",
-                description: `You do not own the item \`${items.find(i=>i.item_id==useItem).name}\` and therefore it cannot be used.`,
+                description: `You do not own the item \`${items.find(i=>i.item_id==useItem).name}\` or it does not exist, therefore it cannot be used.`,
                 color: "RED"
             })]})
         }
@@ -48,8 +55,7 @@ let example = {
                 description: `You were rewarded 25 shifts for having a good resume. You now have ${await db.get(`users.${interaction.user.id}.job.shifts`)} shifts.`,
                 color: "GREEN"
             })]})
-        }
-        if (useItem=="legendarylootbox") {
+        } else if (useItem=="legendarylootbox") {
             await interaction.reply({embeds:[new discord.MessageEmbed({
                 color: "PURPLE",
                 footer: {
@@ -102,8 +108,7 @@ let example = {
                     })]})]})
                 }
             })
-        }
-        if (useItem == "scratchoff") {
+        } else if (useItem == "scratchoff") {
             // removeItem() // Removes 1 `useItem`
             let components = [
                 new discord.MessageActionRow({components:[
@@ -242,12 +247,12 @@ let example = {
                     })
                 ]})
             ]
-            let dollarAmounts = [25,50,100,200,300]
+            let dollarAmounts = [100,250,325,500,550]
             let collectedScratchAmounts = []
             await interaction.reply({embeds:[new discord.MessageEmbed({
                 title: "Scratch Off Ticket",
                 color: "YELLOW",
-                description: "Try it. You might win something. (0/5 scratches)"
+                description: "Try it. 3-of-a-kind is a win. You might win something. (0/5 scratches)"
             })],components})
             let reply = await interaction.fetchReply()
             interaction.channel.createMessageComponentCollector({message:reply,max:5}).on("collect",async int=>{
@@ -267,7 +272,7 @@ let example = {
                 await interaction.editReply({embeds:[new discord.MessageEmbed({
                     title: "Scratch Off Ticket",
                     color: "YELLOW",
-                    description: `Try it. 3-of-a-kind is a win. You might earn something. (${collectedScratchAmounts.length}/5 scratches)`
+                    description: `Try it. You might earn something. (${collectedScratchAmounts.length}/5 scratches)`
                 })], components})
             }).on("end",async(collected,reason)=>{
                 if (reason=="limit") {
@@ -300,11 +305,12 @@ let example = {
                     }
                 }
             })
+        } else {
+            return await interaction.reply({embeds:[{
+                color: "RED",
+                title: "Item Can't Be Used",
+                description: "The item you are trying to use does not have a /use functionality. Make sure the item has functionality and doesn't have its own command.\nEx: Fishing Rods are used with /fish"
+            }]})
         }
     }
 }
-
-orderedItemList.map(item => { return { name: item.name, value: item.item_id } }).forEach(i => {
-    string.addChoices(i)
-})
-module.exports = example

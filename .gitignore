@@ -3,5 +3,8 @@ node_*
 package-lock.json
 *.sqlite
 db.js
-*/private/*.js
 .vscode/*
+# These 3 are for "swear-detectors".
+utils/sussywords.json
+utils/swears.json
+utils/slurs.json

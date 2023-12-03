@@ -146,7 +146,7 @@ waitTillMidnight()
 //: Errors and warnings
 
 client.on("error", msg => {
-    //- This is probably an error object. Error objects have a "trace" property I can use!
+    //- This is probably an error *object*, although it can be a string, too. Error objects have a "trace" property I can use!
     let fields = [{name:"No Stack",value:"No stack trace was provided."}]
     if (splitErrorMessageStack(msg?.trace??msg)) {
         fields = []
@@ -163,7 +163,8 @@ client.on("error", msg => {
                 ? (`Details sent by API: ${msg.split("at ")[0]}`)
                 :"No error message was provided.")
             }`,
-            fields
+            fields,
+            timestamp: new Date()
         })]
     })
 })
@@ -172,7 +173,8 @@ client.on("warn", msg => {
         embeds: [new discord.MessageEmbed({
             color: "ORANGE",
             title: "Warning",
-            description: "@everyone Details sent by API: " + msg
+            description: "@everyone Details sent by API: " + msg,
+            timestamp: new Date()
         })]
     })
 })
@@ -189,7 +191,8 @@ client.on("debug", msg => {
             embeds: [new discord.MessageEmbed({
                 color: "GREEN",
                 title: "Bot is ready!!",
-                description: "@everyone Just got the message that the bot is started. Woo-hoo!"
+                description: "@everyone Just got the message that the bot is started. Woo-hoo!",
+                timestamp: new Date()
             })]
         }) //? Return here because I don't need discord to say "Fully ready" if i do it myself.
     }
@@ -203,7 +206,8 @@ client.on("debug", msg => {
                 description: `10 heartbeats over a timespan of ${heartbeats[9].time-heartbeats[0].time} seconds were sent. Here is how long they took.`,
                 fields: heartbeats.map((heartbeat)=>{
                     return { name: heartbeat.duration, value: `<t:${heartbeat.time}:T> - ${heartbeat.duration}` }
-                })
+                }),
+                timestamp: new Date()
             }]})
             heartbeats = []
         }
@@ -216,7 +220,8 @@ client.on("debug", msg => {
             description: `The bot has crashed or a dev has asked, so all ${heartbeats.length} heartbeats over a timespan of ${heartbeats[heartbeats.length-1].time-heartbeats[0].time} seconds were sent. Here is how long they took.`,
             fields: heartbeats.map((heartbeat)=>{
                 return { name: heartbeat.duration, value: `<t:${heartbeat.time}:T> - ${heartbeat.duration}` }
-            })
+            }),
+            timestamp: new Date()
         }]})
         heartbeats = []
         return;
@@ -224,6 +229,8 @@ client.on("debug", msg => {
     let fields = []
     let title = "Debug Log"
     let descriptionDetails = msg
+    // Why C:\ ? I am a windows user, of course!
+    // I wish I had linux, but i don't wanna touch anything 😅
     if (splitErrorMessageStack(msg?.trace??msg)&&msg.includes("C:\\")&&msg.includes("at")) {
         title = "Debug Log with Error"
         if (msg.includes("Manager was destroyed")) {
@@ -244,6 +251,9 @@ client.on("debug", msg => {
         })]
     })
 })
+// uhhhhhhhhhh
+// i forgot what this did
+// and i am too scared to touch it
 
 function splitErrorMessageStack(stackTrace) {
     // Splits an error message stack trace into its error name and filepath
@@ -256,7 +266,7 @@ function splitErrorMessageStack(stackTrace) {
     for (const stack of functions) {
         if (stack.includes("node_modules")||stack.includes("node:")) continue;
         let path = stack.replaceAll("\n","").trim().slice(stack.lastIndexOf("(")+1,stack.lastIndexOf(")")).split(":")
-        let filePath = path[0].concat(path[1]) //  This is because file paths start with "C:\" and then the second part is ".js:13:12"
+        let filePath = path[0].concat(path[1]) //  This is because file paths start with "C:\" and then the second part is ".js:ln:cn"
         positions["Function ".concat(stack.slice(0,stack.lastIndexOf("(")-1))]=`\`${filePath}\` line ${path[2]} col ${path[3]}`
     }
     return positions

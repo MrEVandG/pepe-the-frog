@@ -1,8 +1,7 @@
-// echo.js
+// dm.js
 // discord.js template
 const discord = require("discord.js")
 const { SlashCommandBuilder } = require("@discordjs/builders")
-// This command is just for fun! In my discord server there is an Ask Pepe and this command runs it!
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("dm")
